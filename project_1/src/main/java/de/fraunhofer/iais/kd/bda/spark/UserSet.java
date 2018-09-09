@@ -2,6 +2,8 @@ package de.fraunhofer.iais.kd.bda.spark;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -31,6 +33,40 @@ public class UserSet implements Serializable {
 		union.addAll(other.dataSet);
 		
 		return 1 - (intersection.size()/(double)union.size());
+	}
+	
+	public String toMinHashSignature() {
+		StringBuffer minHashSign = new StringBuffer();
+		for (int j = 0; j < 20; j++) {
+			ArrayList<Long> allHashes = new ArrayList<Long>();
+			final int i = j;
+			this.dataSet.forEach(elem -> {
+				long newHash = Basic.hash(i, elem);
+				allHashes.add(newHash);
+			});
+			long currentMin = Collections.min(allHashes);
+			String curMin = Long.toString(currentMin);
+			minHashSign.append(curMin);
+			minHashSign.append(", ");
+		}
+		minHashSign.deleteCharAt(minHashSign.length() - 1);
+		minHashSign.deleteCharAt(minHashSign.length() - 1);
+		return minHashSign.toString();
+	}
+	
+	public ArrayList<Long> getMinHash() {
+		ArrayList<Long> minHashSign = new ArrayList<Long>();
+		for (int j = 0; j < 20; j++) {
+			ArrayList<Long> allHashes = new ArrayList<Long>();
+			final int i = j;
+			this.dataSet.forEach(elem -> {
+				long newHash = Basic.hash(i, elem);
+				allHashes.add(newHash);
+			});
+			long currentMin = Collections.min(allHashes);
+			minHashSign.add(currentMin);
+		}
+		return minHashSign;
 	}
 	
 	@Override

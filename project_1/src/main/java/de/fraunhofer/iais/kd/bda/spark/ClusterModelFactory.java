@@ -14,13 +14,13 @@ public class ClusterModelFactory {
 
 	public static ClusterModel readFromCsvResource(String file) throws FileNotFoundException {
 		ClusterModel retval = new ClusterModel();
-//
+
 //		InputStream inStream = null;
 //		inStream = ClusterModel.class.getClassLoader()
 //				.getResourceAsStream(file);
 //		InputStreamReader isr = new InputStreamReader(inStream);
 //		BufferedReader br = new BufferedReader(isr);
-//		
+		
 		
 		 FileReader fr = new FileReader(file);
 		BufferedReader br = new BufferedReader(fr);
@@ -34,12 +34,12 @@ public class ClusterModelFactory {
 				String key = vals[0];
 				StringBuilder sb = new StringBuilder();
 				for (int i = 1; i < vals.length - 1; ++i) {
-					int dval = (int) Double.parseDouble(vals[i]);
-					sb.append(dval);
-					sb.append(' ');
+					//int dval = (int) Double.parseDouble(vals[i]);
+					sb.append(vals[i]);
+					sb.append(',');
 				}
-				int dval = (int) Double.parseDouble(vals[vals.length - 1]);
-				sb.append(dval);
+				//int dval = (int) Double.parseDouble(vals[vals.length - 1]);
+				sb.append(vals[vals.length - 1]);
 
 				retval.put(key, sb.toString());
 			}
